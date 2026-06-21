@@ -22,7 +22,7 @@ app.register(cors, {
   credentials: true,
 });
 
-app.get("/", async () => {
+app.get("/health", async () => {
   return {
     status: "ok",
     message: "Server is running",
