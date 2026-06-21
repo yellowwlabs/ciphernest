@@ -3,11 +3,11 @@ import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import { config } from "./config";
 
-const isProduction = config.NODE_ENV === "production";
+const isProduction = config.env === "production";
 
 const app = Fastify({
   logger: {
-    level: config.LOG_LEVEL,
+    level: config.logLevel,
     serializers: {
       req(request) {
         return {
@@ -24,7 +24,7 @@ const app = Fastify({
       },
     },
   },
-  trustProxy: config.TRUST_PROXY || !isProduction,
+  trustProxy: config.trustProxy || !isProduction,
 });
 
 app.register(helmet, {
@@ -32,7 +32,7 @@ app.register(helmet, {
 });
 
 app.register(cors, {
-  origin: isProduction ? config.ALLOWED_ORIGINS : "*",
+  origin: isProduction ? config.allowedOrigins : "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
@@ -41,7 +41,7 @@ app.register(cors, {
 app.get("/", async () => {
   return {
     status: "ok",
-    env: config.NODE_ENV,
+    env: config.env,
     timestamp: new Date().toISOString(),
   };
 });

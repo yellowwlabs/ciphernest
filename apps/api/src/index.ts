@@ -3,8 +3,8 @@ import { config } from "./config";
 
 const start = async () => {
   try {
-    await app.listen({ port: config.PORT, host: config.HOST });
-    app.log.info(`Server listening on http://${config.HOST}:${config.PORT}`);
+    await app.listen({ port: config.port, host: config.host });
+    app.log.info(`Server listening on http://${config.host}:${config.port}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
