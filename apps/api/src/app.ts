@@ -1,21 +1,19 @@
-import Fastify, { type FastifyError, type FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
-import { config } from "./config";
+import Fastify, {
+  type FastifyInstance,
+  type FastifyBaseLogger,
+} from "fastify";
 import { createLogger } from "logger";
+import { config } from "./config";
+import { errorHandler } from "./middlewares/error.middleware";
 import { userRoutes } from "./routes/user";
-
-declare module "fastify" {
-  interface FastifyInstance {
-    authenticate: (request: any, reply: any) => Promise<void>;
-  }
-}
 
 const isProduction = config.nodeEnv === "production";
 
-const app: FastifyInstance<any, any, any, any> = Fastify({
-  loggerInstance: createLogger("api", { level: config.logLevel }),
+const app: FastifyInstance = Fastify({
+  loggerInstance: createLogger("api", { level: config.logLevel }) as unknown as FastifyBaseLogger,
   trustProxy: config.trustProxy || !isProduction,
 });
 
@@ -46,16 +44,6 @@ if (config.privyPublicKey) {
   });
 }
 
-app.decorate("authenticate", async (request: any, reply: any) => {
-  try {
-    await request.jwtVerify();
-  } catch (err) {
-    reply
-      .status(401)
-      .send({ error: "Unauthorized", message: "Invalid or expired token" });
-  }
-});
-
 app.get("/health", async () => {
   return {
     status: "ok",
@@ -70,20 +58,6 @@ app.get("/health", async () => {
 
 app.register(userRoutes);
 
-app.setErrorHandler((error: FastifyError, request, reply) => {
-  request.log.error(error);
-
-  const statusCode = error.statusCode || 500;
-  const isClientError = statusCode >= 400 && statusCode < 500;
-
-  reply.status(statusCode).send({
-    statusCode,
-    error: error.name || "InternalServerError",
-    message:
-      isClientError || !isProduction
-        ? error.message
-        : "An unexpected error occurred",
-  });
-});
+app.setErrorHandler(errorHandler);
 
 export default app;
