@@ -15,7 +15,7 @@ export default function Home() {
     try {
       const token = await getAccessToken();
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
-      const res = await fetch(`${apiUrl}/me`, {
+      const res = await fetch(`${apiUrl}/@me`, {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
