@@ -24,6 +24,9 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
+    "@fastify/helmet": "^13.0.2",
+    "@types/helmet": "^4.0.0",
+    "helmet": "link:@types/@fastify/helmet",
     "tsx": "^4.22.4",
     "typescript": "^5.9.3"
   }

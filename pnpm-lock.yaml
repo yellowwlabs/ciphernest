@@ -48,6 +48,15 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
     devDependencies:
+      '@fastify/helmet':
+        specifier: ^13.0.2
+        version: 13.0.2
+      '@types/helmet':
+        specifier: ^4.0.0
+        version: 4.0.0
+      helmet:
+        specifier: link:@types/@fastify/helmet
+        version: link:@types/@fastify/helmet
       tsx:
         specifier: ^4.22.4
         version: 4.22.4
@@ -1271,6 +1280,9 @@ packages:
   '@fastify/forwarded@3.0.1':
     resolution: {integrity: sha512-JqDochHFqXs3C3Ml3gOY58zM7OqO9ENqPo0UqAjAjH8L01fRZqwX9iLeX34//kiJubF7r2ZQHtBRU36vONbLlw==}
 
+  '@fastify/helmet@13.0.2':
+    resolution: {integrity: sha512-tO1QMkOfNeCt9l4sG/FiWErH4QMm+RjHzbMTrgew1DYOQ2vb/6M1G2iNABBrD7Xq6dUk+HLzWW8u+rmmhQHifA==}
+
   '@fastify/jwt@10.1.0':
     resolution: {integrity: sha512-U1y8ZbxoH1Pjon3euzPJmbCkuYBM+hrQlFWLQWvKmJGCNT6mVsAolnVJdEWfXeQOKpgmuRVCIsPll5RLZxj10A==}
 
@@ -1731,6 +1743,10 @@ packages:
 
   '@types/gensync@1.0.5':
     resolution: {integrity: sha512-MbsRCT7mTikHwKZ0X+LVUTLRrZZRLipTuXEO9qOYO+zmjMVk81axyClMROf6uoPD9MRVu46bx8zoR0Ad9q3NAg==}
+
+  '@types/helmet@4.0.0':
+    resolution: {integrity: sha512-ONIn/nSNQA57yRge3oaMQESef/6QhoeX7llWeDli0UZIfz8TQMkfNPTXA8VnnyeA1WUjG2pGqdjEIueYonMdfQ==}
+    deprecated: This is a stub types definition. helmet provides its own type definitions, so you do not need this installed.
 
   '@types/jsesc@2.5.1':
     resolution: {integrity: sha512-9VN+6yxLOPLOav+7PwjZbxiID2bVaeq0ED4qSQmdQTdjnXJSaCVKTR58t15oqH1H5t8Ng2ZX1SabJVoN9Q34bw==}
@@ -2703,6 +2719,10 @@ packages:
   hasown@2.0.4:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
+
+  helmet@8.2.0:
+    resolution: {integrity: sha512-DRgTIUgnWcJ62KyarxxziuqYxKGnR6Rgg19BlbucN/dpmJbl1XOit6qvoOX0ZT+HhWe5OUVhU/a1zpGyc1xA0Q==}
+    engines: {node: '>=18.0.0'}
 
   hermes-estree@0.25.1:
     resolution: {integrity: sha512-0wUoCcLp+5Ev5pDW2OriHC2MJCbwLwuRx+gAqMTOkGKJJiBCLjtrvy4PWUGn6MIVefecRpzoOZ/UV6iGdOr+Cw==}
@@ -4780,6 +4800,11 @@ snapshots:
 
   '@fastify/forwarded@3.0.1': {}
 
+  '@fastify/helmet@13.0.2':
+    dependencies:
+      fastify-plugin: 5.1.0
+      helmet: 8.2.0
+
   '@fastify/jwt@10.1.0':
     dependencies:
       '@fastify/error': 4.2.0
@@ -5116,6 +5141,10 @@ snapshots:
   '@types/estree@1.0.9': {}
 
   '@types/gensync@1.0.5': {}
+
+  '@types/helmet@4.0.0':
+    dependencies:
+      helmet: 8.2.0
 
   '@types/jsesc@2.5.1': {}
 
@@ -6266,6 +6295,8 @@ snapshots:
   hasown@2.0.4:
     dependencies:
       function-bind: 1.1.2
+
+  helmet@8.2.0: {}
 
   hermes-estree@0.25.1: {}
 
