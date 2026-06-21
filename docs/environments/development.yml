@@ -1,0 +1,8 @@
+name: development
+vars:
+  - name: baseUrl
+    value: http://localhost:3001
+    enabled: true
+  - name: token
+    value: ""
+    enabled: true
