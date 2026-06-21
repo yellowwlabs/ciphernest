@@ -41,6 +41,9 @@ importers:
       '@fastify/websocket':
         specifier: ^11.2.0
         version: 11.2.0(bufferutil@4.1.0)(utf-8-validate@5.0.10)
+      config:
+        specifier: workspace:*
+        version: link:../../packages/config
       db:
         specifier: workspace:*
         version: link:../../packages/db
@@ -84,6 +87,9 @@ importers:
       '@privy-io/react-auth':
         specifier: ^3.32.1
         version: 3.32.1(@solana-program/system@0.10.0(@solana/kit@5.5.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana-program/token@0.9.0(@solana/kit@5.5.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10)))(@solana/kit@5.5.1(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@5.0.10))(@solana/sysvars@5.5.1(typescript@5.9.3))(@tanstack/query-core@5.101.0)(@tanstack/react-query@5.101.0(react@19.2.4))(@types/react@19.2.17)(bufferutil@4.1.0)(ioredis@5.11.1)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)(typescript@5.9.3)(use-sync-external-store@1.4.0(react@19.2.4))(utf-8-validate@5.0.10)(zod@3.25.76)
+      config:
+        specifier: workspace:*
+        version: link:../../packages/config
       next:
         specifier: 16.2.9
         version: 16.2.9(@babel/core@7.29.7)(react-dom@19.2.4(react@19.2.4))(react@19.2.4)
@@ -130,6 +136,19 @@ importers:
       logger:
         specifier: workspace:*
         version: link:../../packages/logger
+
+  packages/config:
+    dependencies:
+      dotenv:
+        specifier: ^17.4.2
+        version: 17.4.2
+    devDependencies:
+      '@types/node':
+        specifier: ^20.11.0
+        version: 20.19.43
+      typescript:
+        specifier: ^5.9.3
+        version: 5.9.3
 
   packages/db:
     dependencies:

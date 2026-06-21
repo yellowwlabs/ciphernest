@@ -1,10 +1,11 @@
 "use client";
 
 import { PrivyProvider } from "@privy-io/react-auth";
+import config from "config"
 
 export function Providers({ children }: { children: React.ReactNode }) {
   const appId =
-    process.env.NEXT_PUBLIC_PRIVY_APP_ID || "clux123456789012345678901";
+    config.privyAppId || "";
 
   return (
     <PrivyProvider
