@@ -1,9 +1,11 @@
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import fastifyJwt from "@fastify/jwt";
+import buildGetJwks from "get-jwks";
 import Fastify, {
   type FastifyInstance,
   type FastifyBaseLogger,
+  type FastifyRequest,
 } from "fastify";
 import { createLogger } from "logger";
 import { config } from "./config";
@@ -28,7 +30,35 @@ app.register(cors, {
   credentials: true,
 });
 
-if (config.privyPublicKey) {
+if (config.privyAppId) {
+  const getJwks = buildGetJwks();
+  app.register(fastifyJwt, {
+    decode: { complete: true },
+    secret: async (
+      _request: FastifyRequest,
+      tokenOrHeader: {
+        header?: { alg?: string; kid?: string };
+        alg?: string;
+        kid?: string;
+      },
+    ) => {
+      const header = tokenOrHeader?.header || tokenOrHeader;
+      const kid = header?.kid;
+      const alg = header?.alg;
+      if (!kid) {
+        throw new Error("Invalid token headers");
+      }
+      return getJwks.getPublicKey({
+        domain: `https://auth.privy.io/api/v1/apps/${config.privyAppId}/`,
+        alg,
+        kid,
+      });
+    },
+    verify: {
+      algorithms: ["ES256", "RS256"],
+    },
+  });
+} else if (config.privyPublicKey) {
   app.register(fastifyJwt, {
     secret: config.privyPublicKey,
     verify: {
@@ -37,7 +67,7 @@ if (config.privyPublicKey) {
   });
 } else {
   app.log.warn(
-    "⚠️ PRIVY_PUBLIC_KEY is not defined. Using fallback secret for development.",
+    "⚠️ PRIVY_APP_ID and PRIVY_PUBLIC_KEY are not defined. Using fallback secret for development.",
   );
   app.register(fastifyJwt, {
     secret: "fallback-secret-for-dev",

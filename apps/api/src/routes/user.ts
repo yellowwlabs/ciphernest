@@ -4,11 +4,6 @@ import { authenticate } from "../middlewares/auth.middleware";
 
 export async function userRoutes(app: FastifyInstance) {
   app.get(
-    "/me",
-    { preValidation: [authenticate] },
-    userController.getMe.bind(userController),
-  );
-  app.get(
     "/@me",
     { preValidation: [authenticate] },
     userController.getMe.bind(userController),
