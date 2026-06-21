@@ -1,6 +1,8 @@
+import path from "node:path";
 import dotenv from "dotenv";
 
 dotenv.config();
+dotenv.config({ path: path.resolve(process.cwd(), "../../.env") });
 
 export const config = {
   nodeEnv: process.env.NODE_ENV || "development",
