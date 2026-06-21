@@ -1,14 +1,13 @@
 import Fastify, { type FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import { config } from "./config";
 
-const env = process.env.NODE_ENV || "development";
-const isProduction = env === "production";
+const isProduction = config.NODE_ENV === "production";
 
-// Create the Fastify instance with highly optimized Pino logger configurations
 const app = Fastify({
   logger: {
-    level: process.env.LOG_LEVEL || (isProduction ? "info" : "debug"),
+    level: config.LOG_LEVEL,
     serializers: {
       req(request) {
         return {
@@ -25,39 +24,29 @@ const app = Fastify({
       },
     },
   },
-  // Enable trustProxy in production if deploying behind a reverse proxy (Nginx, ALB, Cloudflare, etc.)
-  trustProxy: process.env.TRUST_PROXY === "true" || !isProduction,
+  trustProxy: config.TRUST_PROXY || !isProduction,
 });
 
-// Configure Helmet for secure HTTP headers
 app.register(helmet, {
-  contentSecurityPolicy: isProduction ? undefined : false, // Disable CSP in dev for easier tool/playground integration
+  contentSecurityPolicy: isProduction ? undefined : false,
 });
-
-// Configure CORS dynamically based on environment
-const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(",")
-  : ["http://localhost:3000"]; // Next.js default port
 
 app.register(cors, {
-  origin: isProduction ? allowedOrigins : "*",
+  origin: isProduction ? config.ALLOWED_ORIGINS : "*",
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
   allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
   credentials: true,
 });
 
-// Base health check route
 app.get("/", async () => {
   return {
     status: "ok",
-    env,
+    env: config.NODE_ENV,
     timestamp: new Date().toISOString(),
   };
 });
 
-// Standardized Error Handler
 app.setErrorHandler((error: FastifyError, request, reply) => {
-  // Automatically logs the error details using Fastify's optimized logger
   request.log.error(error);
 
   const statusCode = error.statusCode || 500;

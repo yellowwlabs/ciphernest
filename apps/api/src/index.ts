@@ -1,19 +1,16 @@
 import app from "./app";
-
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3001;
-const host = process.env.HOST || "0.0.0.0"; // Host 0.0.0.0 is critical for container environments
+import { config } from "./config";
 
 const start = async () => {
   try {
-    await app.listen({ port, host });
-    app.log.info(`Server listening on http://${host}:${port}`);
+    await app.listen({ port: config.PORT, host: config.HOST });
+    app.log.info(`Server listening on http://${config.HOST}:${config.PORT}`);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
   }
 };
 
-// Graceful shutdown handler to release resources and wait for in-flight requests
 const closeGracefully = async (signal: string) => {
   app.log.info(`Received ${signal}. Gracefully shutting down...`);
   try {
