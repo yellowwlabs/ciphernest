@@ -1,0 +1,23 @@
+{
+  "name": "cipher-nest",
+  "private": true,
+  "packageManager": "pnpm@11.3.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "format": "turbo format",
+    "typecheck": "turbo typecheck",
+    "biome:format": "biome format --write .",
+    "biome:lint": "biome lint ."
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.1",
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
+    "@babel/preset-typescript": "^8.0.1",
+    "@biomejs/biome": "^2.5.0",
+    "@types/node": "^26.0.0",
+    "turbo": "^2.9.18"
+  }
+}
