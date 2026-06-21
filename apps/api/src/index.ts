@@ -1,4 +1,4 @@
-import { config } from "./config";
+import { config } from "config";
 import app from "./app";
 
 const start = async () => {

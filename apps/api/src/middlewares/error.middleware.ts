@@ -1,6 +1,6 @@
 import type { FastifyError, FastifyRequest, FastifyReply } from "fastify";
 import { AppError } from "../utils/errors";
-import { config } from "../config";
+import { config } from "config";
 
 const isProduction = config.nodeEnv === "production";
 

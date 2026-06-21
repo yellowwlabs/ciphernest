@@ -8,9 +8,10 @@ import Fastify, {
   type FastifyRequest,
 } from "fastify";
 import { createLogger } from "logger";
-import { config } from "./config";
+import config from "config";
 import { errorHandler } from "./middlewares/error.middleware";
 import { userRoutes } from "./routes/user";
+
 
 const isProduction = config.nodeEnv === "production";
 
