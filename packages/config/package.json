@@ -1,0 +1,21 @@
+{
+  "name": "config",
+  "version": "1.0.0",
+  "description": "Shared configuration for cipher-nest services",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "babel src -d dist --extensions \".ts\" --source-maps --root-mode upward && tsc --emitDeclarationOnly --outDir dist",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint src",
+    "format": "biome format --write src"
+  },
+  "dependencies": {
+    "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3",
+    "@types/node": "^20.11.0"
+  }
+}
