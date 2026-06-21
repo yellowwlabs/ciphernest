@@ -11,4 +11,5 @@ export const config = {
   allowedOrigins: (process.env.ALLOWED_ORIGINS || "http://localhost:3000")
     .split(",")
     .map((o) => o.trim()),
+  privyPublicKey: process.env.PRIVY_PUBLIC_KEY || "",
 };
