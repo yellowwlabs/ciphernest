@@ -2,28 +2,12 @@ import Fastify, { type FastifyError } from "fastify";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import { config } from "./config";
+import { createLogger } from "logger";
 
-const isProduction = config.env === "production";
+const isProduction = config.nodeEnv === "production";
 
 const app = Fastify({
-  logger: {
-    level: config.logLevel,
-    serializers: {
-      req(request) {
-        return {
-          method: request.method,
-          url: request.url,
-          hostname: request.hostname,
-          remoteAddress: request.ip,
-        };
-      },
-      res(reply) {
-        return {
-          statusCode: reply.statusCode,
-        };
-      },
-    },
-  },
+  loggerInstance: createLogger("api", { level: config.logLevel }),
   trustProxy: config.trustProxy || !isProduction,
 });
 
@@ -41,8 +25,12 @@ app.register(cors, {
 app.get("/", async () => {
   return {
     status: "ok",
-    env: config.env,
+    message: "Server is running",
+    env: config.nodeEnv,
     timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+    memory: process.memoryUsage(),
+    version: process.env.npm_package_version || "1.0.0",
   };
 });
 
