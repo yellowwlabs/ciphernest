@@ -1,4 +1,4 @@
-import Fastify, { type FastifyError } from "fastify";
+import Fastify, { type FastifyError, type FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
 import { config } from "./config";
@@ -6,7 +6,7 @@ import { createLogger } from "logger";
 
 const isProduction = config.nodeEnv === "production";
 
-const app = Fastify({
+const app: FastifyInstance<any, any, any, any> = Fastify({
   loggerInstance: createLogger("api", { level: config.logLevel }),
   trustProxy: config.trustProxy || !isProduction,
 });
