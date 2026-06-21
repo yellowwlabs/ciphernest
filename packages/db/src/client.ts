@@ -1,12 +1,10 @@
 import postgres from "postgres";
 import { drizzle } from "drizzle-orm/postgres-js";
 
-// Prevent multiple connections during hot reloading in development
 const globalForDb = globalThis as unknown as {
   conn: postgres.Sql | undefined;
 };
 
-// Parse pool options from environment variables or use safe defaults
 const maxConnections = process.env.DB_MAX_CONNECTIONS
   ? parseInt(process.env.DB_MAX_CONNECTIONS, 10)
   : 10;
@@ -19,8 +17,6 @@ const connectTimeout = process.env.DB_CONNECT_TIMEOUT
   ? parseInt(process.env.DB_CONNECT_TIMEOUT, 10)
   : 10;
 
-// Enable prepared statements by default, disable if DB_PREPARE is "false"
-// This is critical for PgBouncer/Supabase pooler in Transaction Mode
 const usePrepared = process.env.DB_PREPARE !== "false";
 
 const connectionString = process.env.DATABASE_URL;
