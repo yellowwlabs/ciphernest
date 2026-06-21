@@ -59,6 +59,9 @@ importers:
       get-jwks:
         specifier: ^11.0.3
         version: 11.0.3
+      ioredis:
+        specifier: ^5.11.1
+        version: 5.11.1
       logger:
         specifier: workspace:*
         version: link:../../packages/logger

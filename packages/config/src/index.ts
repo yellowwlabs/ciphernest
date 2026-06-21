@@ -16,6 +16,7 @@ export const config = {
     .map((o) => o.trim()),
   privyPublicKey: process.env.PRIVY_PUBLIC_KEY || "",
   privyAppId: process.env.NEXT_PUBLIC_PRIVY_APP_ID || process.env.PRIVY_APP_ID || "",
+  redisUrl: process.env.REDIS_URL || "redis://localhost:6379",
 };
 
 export default config;

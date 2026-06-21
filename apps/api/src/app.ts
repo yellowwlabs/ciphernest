@@ -11,6 +11,9 @@ import { createLogger } from "logger";
 import config from "config";
 import { errorHandler } from "./middlewares/error.middleware";
 import { userRoutes } from "./routes/user";
+import { db } from "db";
+import { sql } from "drizzle-orm";
+import Redis from "ioredis";
 
 
 const isProduction = config.nodeEnv === "production";
@@ -90,5 +93,36 @@ app.get("/health", async () => {
 app.register(userRoutes);
 
 app.setErrorHandler(errorHandler);
+
+app.addHook("onReady", async () => {
+  // Check Database connection
+  try {
+    app.log.info("Checking database connection...");
+    await db.execute(sql`SELECT 1`);
+    app.log.info("Database connection is healthy!");
+  } catch (err) {
+    app.log.error({ err }, "Database connection failed");
+    throw err;
+  }
+
+  // Check Redis connection
+  try {
+    app.log.info("Checking Redis connection...");
+    const redis = new Redis(config.redisUrl, {
+      maxRetriesPerRequest: 1,
+      connectTimeout: 5000,
+    });
+    const pong = await redis.ping();
+    if (pong === "PONG") {
+      app.log.info("Redis connection is healthy!");
+    } else {
+      throw new Error(`Unexpected Redis ping response: ${pong}`);
+    }
+    await redis.quit();
+  } catch (err) {
+    app.log.error({ err }, "Redis connection failed");
+    throw err;
+  }
+});
 
 export default app;
