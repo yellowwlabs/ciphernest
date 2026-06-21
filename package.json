@@ -4,7 +4,13 @@
   "packageManager": "pnpm@11.3.0",
   "scripts": {
     "dev": "turbo dev",
+    "dev:app": "turbo dev --filter=web",
+    "dev:backend": "turbo dev --filter=api",
+    "dev:worker": "turbo dev --filter=worker",
     "build": "turbo build",
+    "build:app": "turbo build --filter=web",
+    "build:backend": "turbo build --filter=api",
+    "build:worker": "turbo build --filter=worker",
     "lint": "turbo lint",
     "format": "turbo format",
     "typecheck": "turbo typecheck",
