@@ -1,0 +1,106 @@
+openapi: 3.0.3
+info:
+  title: Cipher Nest API
+  version: 1.0.0
+  description: Authentication and profile synchronization API for Cipher Nest.
+paths:
+  /health:
+    get:
+      summary: Health Check
+      responses:
+        '200':
+          description: Server is healthy and running.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: string
+                    example: 2026-06-22T01:50:00.000Z
+  /me:
+    get:
+      summary: Get current user profile
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized.
+  /@me:
+    get:
+      summary: Get current user profile (alias)
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: User profile details.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '401':
+          description: Unauthorized.
+  /auth/login:
+    post:
+      summary: Sync user profile from Privy
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SyncProfileInput'
+      responses:
+        '200':
+          description: User profile synced successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Invalid request payload.
+        '401':
+          description: Unauthorized.
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        privyId:
+          type: string
+        walletAddress:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+    SyncProfileInput:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        walletAddress:
+          type: string
+          nullable: true
