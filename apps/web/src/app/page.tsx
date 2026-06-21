@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function Home() {
   const { ready, authenticated, user, login, logout, getAccessToken } =
     usePrivy();
-  const [apiResponse, setApiResponse] = useState<any>(null);
+  const [apiResponse, setApiResponse] = useState<unknown>(null);
   const [loading, setLoading] = useState(false);
 
   const testAuthApi = async () => {
@@ -24,8 +24,9 @@ export default function Home() {
       });
       const data = await res.json();
       setApiResponse(data);
-    } catch (err: any) {
-      setApiResponse({ error: err.message || "Failed to contact API" });
+    } catch (err) {
+      const error = err as Error;
+      setApiResponse({ error: error.message || "Failed to contact API" });
     } finally {
       setLoading(false);
     }
@@ -58,6 +59,7 @@ export default function Home() {
           {!authenticated ? (
             <div className="w-full flex flex-col gap-4 mt-4">
               <button
+                type="button"
                 onClick={login}
                 className="w-full py-3 px-4 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium rounded-xl transition-all cursor-pointer shadow-sm hover:shadow"
               >
@@ -110,6 +112,7 @@ export default function Home() {
                   Backend Authentication Test
                 </h3>
                 <button
+                  type="button"
                   onClick={testAuthApi}
                   disabled={loading}
                   className="w-full py-2.5 px-4 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 active:bg-zinc-100 dark:active:bg-zinc-800 text-zinc-800 dark:text-zinc-200 font-medium rounded-xl transition-all cursor-pointer disabled:opacity-50"
@@ -117,7 +120,7 @@ export default function Home() {
                   {loading ? "Verifying..." : "Call Authenticated API (/me)"}
                 </button>
 
-                {apiResponse && (
+                {apiResponse !== null && (
                   <pre className="text-xs bg-zinc-50 dark:bg-zinc-950 p-4 rounded-xl border border-zinc-100 dark:border-zinc-900 overflow-x-auto text-zinc-800 dark:text-zinc-300 max-h-48">
                     {JSON.stringify(apiResponse, null, 2)}
                   </pre>
@@ -125,6 +128,7 @@ export default function Home() {
               </div>
 
               <button
+                type="button"
                 onClick={logout}
                 className="w-full py-2.5 px-4 border border-red-200 dark:border-red-900/50 hover:bg-red-50 dark:hover:bg-red-950/20 text-red-600 dark:text-red-400 font-medium rounded-xl transition-all cursor-pointer text-center text-sm"
               >
